@@ -1,0 +1,119 @@
+* git install in red hat
+sudo -i
+dnf install git
+git --version
+
+* git clone
+git clone https://github.com/couchbasecloud/rest-api-examples.git
+
+* get API keys
+in Capella Console, API keys >> generate a key
+
+* environment variable
+export CBC_API_URL=https://cloudapi.cloud.couchbase.com
+export CBC_SECRET_KEY=UBwFuCWdXz3NbrDNpd6qyP7YQ4NmKPRoouaHHm5gd6xCLx1R811uFVCOTZ81UbNr -- generate된 Key의 정보로 변환
+export CBC_ACCESS_KEY=89zvnfnN9P25pgfiQG4nGA3nKxDHCAQ7 -- generate된 Key의 정보로 변환
+export CBC_BASE_URL=https://cloudapi.cloud.couchbase.com
+
+* python uninstall
+yum remove python3
+
+* python package list
+dnf module list | grep python
+
+* python 3.9 install
+dnf install python39
+
+* python libraries install
+pip3 install -r requirements.txt
+
+* get cluster id
+python3 getClusters.py
+2022-07-22 08:27:39,124 - capellaAPI.CapellaAPI - INFO - /v3/clusters
+Capella Clusters
+--------------------------------------------------------------------------------------------------------------------------
+| Environment |      Name       |              Cluster ID              | Cloud ID |              Project ID              |
+--------------------------------------------------------------------------------------------------------------------------
+| hosted      | Trial - Cluster | 0a6c87a2-d15e-4eda-8aba-bda45d9ded23 | N/A      | e56daaf0-f801-4b35-811b-038d7b8875cc |
+--------------------------------------------------------------------------------------------------------------------------
+
+* get cluster info
+python3 getHostedClusterInfo.py -cid 0a6c87a2-d15e-4eda-8aba-bda45d9ded23
+2022-07-22 08:28:53,345 - capellaAPI.CapellaAPI - INFO - /v2/status
+2022-07-22 08:28:53,370 - capellaAPI.CapellaAPI - INFO - /v3/clusters/0a6c87a2-d15e-4eda-8aba-bda45d9ded23
+Got information for cluster ID 0a6c87a2-d15e-4eda-8aba-bda45d9ded23
+{
+   "availabilityZones": [
+      "ap-southeast-1a"
+   ],
+   "createdAt": "2022-07-19T11:50:38.686476947Z",
+   "endpointsSrv": "cb.lxg5xrsrvk44xqee.cloud.couchbase.com",
+   "environment": "hosted",
+   "id": "0a6c87a2-d15e-4eda-8aba-bda45d9ded23",
+   "name": "Trial - Cluster",
+   "place": {
+      "CIDR": "10.2.0.0/20",
+      "provider": "AWS",
+      "region": "ap-southeast-1"
+   },
+   "projectId": "e56daaf0-f801-4b35-811b-038d7b8875cc",
+   "servers": [
+      {
+         "compute": "m5.large",
+         "services": [
+            "data",
+            "index",
+            "query",
+            "search"
+         ],
+         "size": 1,
+         "storage": {
+            "IOPS": 3000,
+            "size": 50,
+            "type": "GP3"
+         }
+      }
+   ],
+   "status": "healthy",
+   "support": "Basic",
+   "tenantId": "3483ade0-561b-437c-a726-44de4c15b8c2",
+   "updatedAt": "2022-07-19T11:53:43.924347656Z",
+   "version": {
+      "components": {
+         "cbServerVersion": "7.0.4"
+      },
+      "name": "7.0.4"
+   }
+}
+
+* get cluster status
+python3 getHostedClusterStatus.py -cid 0a6c87a2-d15e-4eda-8aba-bda45d9ded23
+2022-07-22 08:30:46,039 - capellaAPI.CapellaAPI - INFO - /v2/status
+2022-07-22 08:30:46,127 - capellaAPI.CapellaAPI - INFO - /v3/clusters/0a6c87a2-d15e-4eda-8aba-bda45d9ded23/status
+Status for cluster with ID 0a6c87a2-d15e-4eda-8aba-bda45d9ded23 is healthy
+
+* get user
+python3 getUsers.py
+2022-07-22 08:39:14,281 - capellaAPI.CapellaAPI - INFO - /v2/status
+2022-07-22 08:39:14,305 - capellaAPI.CapellaAPI - INFO - /v2/users?perPage=100
+Users
+-------------------------------------------------------------------------
+|  Name  |         Email         |                  ID                  |
+-------------------------------------------------------------------------
+| Yawova | yawova7005@leupus.com | d2e2045f-172b-4260-82a6-01f2b1b08d34 |
+-------------------------------------------------------------------------
+
+* get project
+python3 getProjects.py
+2022-07-22 08:40:28,292 - capellaAPI.CapellaAPI - INFO - /v2/status
+2022-07-22 08:40:28,316 - capellaAPI.CapellaAPI - INFO - /v2/projects?perPage=100
+Projects
+------------------------------------------------------------------------------------------
+|      Name       |          Created at           |                  ID                  |
+------------------------------------------------------------------------------------------
+| Trial - Project | Tue, 19 Jul 2022 11:50:38 GMT | e56daaf0-f801-4b35-811b-038d7b8875cc |
+------------------------------------------------------------------------------------------
+
+* 참고
+https://linuxconfig.org/install-git-in-linux-redhat-8
+https://computingforgeeks.com/how-to-install-python-3-python-2-on-rhel-centos/
